@@ -1,2 +1,7 @@
 <h1>hey, guys!</h1
 
+<%= image_tag 'bookshelf.png', width: 315 %>
+
+<%= form_with(model: @post) do |form| %>
+  <%= form.text_area :keyword, id: :keyword, class: 'form-control', rows: '1' %>
+<%end%>
