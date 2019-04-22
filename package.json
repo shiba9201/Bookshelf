@@ -1,5 +1,7 @@
 {
   "name": "bookshelf",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "html2canvas": "^1.0.0-rc.1"
+  }
 }
