@@ -8,6 +8,10 @@ class PostsController < ApplicationController
     render json: contents
   end 
   
+  def make
+    generate(to_uploaded(params[:imgData]), params[:hash])
+  end 
+  
   private
   
   def search_by_amazon(keyword)
