@@ -10,6 +10,7 @@ class PostsController < ApplicationController
   
   def make
     generate(to_uploaded(params[:imgData]), params[:hash])
+    render :json =>date
   end 
   
   private
