@@ -21,3 +21,25 @@ body{
   font-size: 18px;
   color: white;
 }
+
+.item{
+  display: table;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.item-img{
+  display: table-cell;
+}
+.item-title{
+  display: table-cell;
+  vertical-align: middle;
+  padding-left: 10px;
+  font-family: "sans-serif";
+}
+
+// 注意文
+.info {
+  color: #A4A4A4;
+  font-size: 13px;
+  margin: 10px;
+}
