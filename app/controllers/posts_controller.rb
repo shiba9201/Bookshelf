@@ -10,6 +10,7 @@ class PostsController < ApplicationController
   
   def make
     generate(to_uploaded(params[:imgData]), params[:hash])
+    date = [Rails.env]
     render :json =>date
   end 
   
@@ -37,5 +38,14 @@ class PostsController < ApplicationController
       books << book
     end
     books
+  end 
+  
+  def to_uploaded(base64_params)
+    content_type, string_data = base64_param.match(/data:(.*?);(?:.*?),(.*)$/).captures
+    tempfile = Tempfile.new
+    tempfile.binmode
+    tempfile << Base64.decode64(string_data)
+    file_param = { type: content_type, tempfile: tempfile }
+    ActionDispatch::Http::UploadedFile.new(file_param)
   end 
 end
