@@ -25,14 +25,14 @@ $(function(){
     }, 700); // 何ms後に検索するかはここで設定
   }
 
-  // 入力フォームに入力があった場合にseachメソッドを呼び出す
+// 入力フォームに入力があった場合にseachメソッドを呼び出す
   var globalTimeout = null;
   $('#keyword').keyup(function() {
     var keyword = $("#keyword").val();
     search(keyword);
   });
-  
-   // 本棚をシェアボタンが押された時に、シェア用の画像を生成する
+
+  // 本棚をシェアボタンが押された時に、シェア用の画像を生成する
   $("#save-button").on("click", function () {
     // 処理前にLoading 画像を表示
     dispLoading('シェア準備中');
@@ -54,6 +54,36 @@ $(function(){
       useCORS: true
     }).then( function (canvas) {
       var imgData = canvas.toDataURL();
+      
+            // サーバー側で、画像をS3へ保存
+      $.ajax({
+        url: '/make',
+        type: 'POST',
+        dataType: 'json',
+        async: true,
+        data: {imgData: imgData, hash: hash},
+      }).done(function(data){
+        var environment = data[0];
+        removeLoading();
+        // SweatAlert2という綺麗なダイアログを出せるライブラリを使用
+        Swal.fire({
+          type: 'success',
+          text: '↓Let\'s share↓',
+          imageUrl: `https://s3-ap-northeast-1.amazonaws.com/[アプリ名]-${environment}/images/${hash}.png`,
+          imageWidth: 315,
+          imageAlt: 'Custom image',
+          showConfirmButton: false,
+          showCloseButton: true,
+          footer: `<a href=https://twitter.com/share?text=%23[ハッシュタグ名]&url=https://[アプリ名].herokuapp.com?h=${hash}>Twitterシェア</a>`,
+        })
+      }).fail( function(data) {
+        removeLoading();
+        Swal.fire({
+          type: 'error',
+          title: '画像作成に失敗しました...(; ;)',
+          text: 'もう一度ボタンを押してみてください(> <)',
+        })
+      });
     });
   });
- });
+});
